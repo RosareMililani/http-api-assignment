@@ -25,7 +25,7 @@ const respond = (request, response, content, type) => {
 // links - read into server.js
 const getIndex = (request, response) => respond(request, response, index, 'text/html');
 
-const getCSS = (request, response) => respond(request, response, cssDisplay, 'text/html');
+const getCSS = (request, response) => respond(request, response, cssDisplay, 'text/css');
 
 const getSuccess = (request, response, params, acceptedTypes) => {
   const responseJSON = {
@@ -35,7 +35,7 @@ const getSuccess = (request, response, params, acceptedTypes) => {
   if (acceptedTypes[0] === 'text/xml') {
     const responseXML = `<response><message>${responseJSON.message}</message></response>`;
     return respondXML(request, response, 200, responseXML); // bail out
-    //return respond(request,response,responseXML,'text/xml');
+    // return respond(request,response,responseXML,'text/xml');
   }
 
   // const responseString = JSON.stringify(responseJSON);
@@ -57,7 +57,8 @@ const getBadRequest = (request, response, params, acceptedTypes) => {
 
   if (acceptedTypes[0] === 'text/xml') {
     const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-    return respondXML(request, response, 400, responseXML); // bail out
+    // return respondXML(request, response, 400, responseXML); // bail out
+    return respond(request, response, responseXML, 'text/xml');
   }
 
   return respondJSON(request, response, 200, responseJSON);
@@ -89,10 +90,11 @@ const getForbidden = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-    return respondXML(request, response, 403, responseXML); // bail out
-  }
+    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`; 
 
+    return respondXML(request, response, 403, responseXML); // bail out
+    //return respond(request, response, 403, 'text/xml',responseXML, );
+  }
   return respondJSON(request, response, 403, responseJSON);
 };
 
@@ -149,3 +151,4 @@ module.exports = {
   getNotImplemented,
   getNotFound,
 };
+

@@ -13,7 +13,7 @@
       const content = document.querySelector("#content");
       const type = xhr.getResponseHeader("content-type");
       const obj = JSON.parse(xhr.response);
-      let id,message;
+      /* let id,message;
 
       
       if(type === 'application/json'){
@@ -23,7 +23,7 @@
       else if(type === 'text/xml'){
 				id = obj.name;
 				message= obj.message;
-			}
+			} */
 
       switch (xhr.status) {
         case 200:
