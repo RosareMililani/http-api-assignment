@@ -35,11 +35,8 @@ const getSuccess = (request, response, params, acceptedTypes) => {
   if (acceptedTypes[0] === 'text/xml') {
     const responseXML = `<response><message>${responseJSON.message}</message></response>`;
     return respondXML(request, response, 200, responseXML); // bail out
-    // return respond(request,response,responseXML,'text/xml');
   }
 
-  // const responseString = JSON.stringify(responseJSON);
-  // return respond(request,response,responseString,'application/json');
   return respondJSON(request, response, 200, responseJSON);
 };
 
@@ -52,15 +49,14 @@ const getBadRequest = (request, response, params, acceptedTypes) => {
   if (!params.valid || params.valid !== 'true') {
     responseJSON.message = 'Missing valid query parameter set equal to true';
     responseJSON.id = 'badRequest';
+
+    if (acceptedTypes[0] === 'text/xml') {
+      const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
+
+      return respondXML(request, response, 400, responseXML); // bail out
+    }
     return respondJSON(request, response, 400, responseJSON);
   }
-
-  if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-    // return respondXML(request, response, 400, responseXML); // bail out
-    return respond(request, response, responseXML, 'text/xml');
-  }
-
   return respondJSON(request, response, 200, responseJSON);
 };
 
@@ -73,12 +69,11 @@ const getUnauthorized = (request, response, params, acceptedTypes) => {
   if (!params.loggedIn || params.loggedIn !== 'yes') {
     responseJSON.message = 'Missing logged in query parameter set to yes';
     responseJSON.id = 'unauthorized';
+    if (acceptedTypes[0] === 'text/xml') {
+      const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
+      return respondXML(request, response, 401, responseXML); // bail out
+    }
     return respondJSON(request, response, 401, responseJSON);
-  }
-
-  if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-    return respondXML(request, response, 401, responseXML); // bail out
   }
   return respondJSON(request, response, 200, responseJSON);
 };
@@ -90,10 +85,9 @@ const getForbidden = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`; 
+    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
 
     return respondXML(request, response, 403, responseXML); // bail out
-    //return respond(request, response, 403, 'text/xml',responseXML, );
   }
   return respondJSON(request, response, 403, responseJSON);
 };
@@ -151,4 +145,3 @@ module.exports = {
   getNotImplemented,
   getNotFound,
 };
-

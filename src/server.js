@@ -1,11 +1,11 @@
 const http = require('http');
 const url = require('url');
 const query = require('querystring');
-// const htmlHandler = require('./htmlResponses.js');
 const responseHandler = require('./responses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+// call the links
 const urlStruct = {
   '/': responseHandler.getIndex,
   '/style.css': responseHandler.getCSS,
@@ -22,18 +22,17 @@ const urlStruct = {
 };
 
 const onRequest = (request, response) => {
-  // const url = request.url;
   const parsedUrl = url.parse(request.url);
   const params = query.parse(parsedUrl.query);
-  const { valid } = query.parse(parsedUrl.query);
-  const { loggedIn } = query.parse(parsedUrl.query);
+  // const { valid } = query.parse(parsedUrl.query);
+  // const { loggedIn } = query.parse(parsedUrl.query);
   // const valid = query.parse(parsedUrl.query).valid;
   const acceptedTypes = request.headers.accept.split(',');
-  console.dir(parsedUrl);
-  console.log(acceptedTypes);
+  // console.dir(parsedUrl);
+  // console.log(acceptedTypes);
   // console.dir(params);
-  console.dir(valid);
-  console.dir(loggedIn);
+  // console.dir(valid);
+  // console.dir(loggedIn);
   if (urlStruct[parsedUrl.pathname]) {
     urlStruct[parsedUrl.pathname](request, response, params, acceptedTypes);
   } else {
@@ -43,4 +42,4 @@ const onRequest = (request, response) => {
 
 http.createServer(onRequest).listen(port);
 
-console.log(`Listening on 127.0.0.1: ${port}`);
+// console.log(`Listening on 127.0.0.1: ${port}`);

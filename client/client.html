@@ -11,20 +11,8 @@
     const handleResponse = (xhr) => {
       console.log(xhr.response);
       const content = document.querySelector("#content");
-      const type = xhr.getResponseHeader("content-type");
-      const obj = JSON.parse(xhr.response);
-      /* let id,message;
 
-      
-      if(type === 'application/json'){
-				id = obj.name;
-				message= obj.message;
-      }
-      else if(type === 'text/xml'){
-				id = obj.name;
-				message= obj.message;
-			} */
-
+      //display status
       switch (xhr.status) {
         case 200:
           content.innerHTML = '<h1>Success</h1>';
@@ -51,8 +39,26 @@
           content.innerHTML = `<b>Error code '${xhr.status}' not implemented by client! </b>`;
           break;
       }
-      content.innerHTML += `<p>Message: ${obj.message}</p>`;
 
+      const type = xhr.getResponseHeader("content-type");
+      let id, message;
+      const obj = JSON.parse(xhr.response);
+
+      if (type === 'application/json') {
+        id = obj.name;
+        message = obj.message;
+        content.innerHTML += `<p>Message: ${obj.message}</p>`;
+      }
+      if (type === 'text/xml') {
+        message = `<p>Message: ${obj.message}</p>`;
+        const parser = new DOMParser();
+        const objXML = parser.parseFromString(message, "text/xml");
+        //id = xhr.responseXML.innerHTML("id").textContent;
+        //message = xhr.responseXML.querySelector("message").textContent;
+        content.innerHTML += `<p>Message: ${objXML}</p>`;
+        /* document.querySelector("#content").innerHTML = 
+        `<p>Message: ${obj.message}</p>`; */
+      }
     };
 
     const sendAjax = (url, acceptedType) => {
