@@ -50,14 +50,8 @@
         content.innerHTML += `<p>Message: ${obj.message}</p>`;
       }
       if (type === 'text/xml') {
-        message = `<p>Message: ${obj.message}</p>`;
-        const parser = new DOMParser();
-        const objXML = parser.parseFromString(message, "text/xml");
-        //id = xhr.responseXML.innerHTML("id").textContent;
-        //message = xhr.responseXML.querySelector("message").textContent;
-        content.innerHTML += `<p>Message: ${objXML}</p>`;
-        /* document.querySelector("#content").innerHTML = 
-        `<p>Message: ${obj.message}</p>`; */
+        const message = xhr.responseXML.querySelector("message").textContent;
+        content.innerHTML += `<p>Message: ${message}</p>`;
       }
     };
 
