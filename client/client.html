@@ -41,9 +41,10 @@
 
       const type = xhr.getResponseHeader("content-type");
       let id, message;
-      const obj = JSON.parse(xhr.response);
+      
 
       if (type === 'application/json') {
+        const obj = JSON.parse(xhr.response);
         id = obj.name;
         message = obj.message;
         content.innerHTML += `<p>Message: ${obj.message}</p>`;
