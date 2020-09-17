@@ -1,14 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Our simple HTTP server</title>
-  <link rel="stylesheet" type="text/css" href="/style.css">
-  
+  <link rel="stylesheet" type="text/css" href="style.css">
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
 
+    const handleResponse = (xhr) => {
+      console.log(xhr.response);
+      const content = document.querySelector("#content");
+      const type = xhr.getResponseHeader("content-type");
+      const obj = JSON.parse(xhr.response);
+      let id,message;
+
+      
+      if(type === 'application/json'){
+				id = obj.name;
+				message= obj.message;
+      }
+      else if(type === 'text/xml'){
+				id = obj.name;
+				message= obj.message;
+			}
+
+      switch (xhr.status) {
+        case 200:
+          content.innerHTML = '<h1>Success</h1>';
+          break;
+        case 400:
+          content.innerHTML = '<h1>Bad Request</h1>';
+          break;
+        case 401:
+          content.innerHTML = '<h1>Unauthorized</h1>';
+          break;
+        case 403:
+          content.innerHTML = '<h1>Forbidden</h1>';
+          break;
+        case 500:
+          content.innerHTML = '<h1>Internal Server Error</h1>';
+          break;
+        case 501:
+          content.innerHTML = '<h1>Not Implemented</h1>';
+          break;
+        case 404:
+          content.innerHTML = '<h1>Resource Not Found</h1>';
+          break;
+        default:
+          content.innerHTML = `<b>Error code '${xhr.status}' not implemented by client! </b>`;
+          break;
+      }
+      content.innerHTML += `<p>Message: ${obj.message}</p>`;
+
+    };
+
+    const sendAjax = (url, acceptedType) => {
+      //console.log(url, acceptedType);
+      const xhr = new XMLHttpRequest();
+
+      xhr.open("GET", url);
+      xhr.setRequestHeader('Accept', acceptedType);
+
+      xhr.onload = () => handleResponse(xhr);
+
+      xhr.send();
+
+    };
+
+    const init = () => {
+      const sendButton = document.querySelector("#send");
+      sendButton.onclick = () => sendAjax(document.getElementById("page").value, document.getElementById("type").value);
+    };
+
+    window.onload = init;
+
   </script>
 </head>
+
 <body>
   <section id="top">
     <h3>Status Code Tests</h3>
@@ -30,4 +99,5 @@
   <section id="content">
   </section>
 </body>
+
 </html>
