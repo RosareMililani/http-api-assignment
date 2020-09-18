@@ -50,7 +50,7 @@ const getBadRequest = (request, response, params, acceptedTypes) => {
     responseJSON.id = 'badRequest';
 
     if (acceptedTypes[0] === 'text/xml') {
-      return respondXML(request, response, 200, responseJSON); // bail out
+      return respondXML(request, response, 400, responseJSON); // bail out
     }
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -67,7 +67,7 @@ const getUnauthorized = (request, response, params, acceptedTypes) => {
     responseJSON.message = 'Missing logged in query parameter set to yes';
     responseJSON.id = 'unauthorized';
     if (acceptedTypes[0] === 'text/xml') {
-      return respondXML(request, response, 200, responseJSON); // bail out
+      return respondXML(request, response, 401, responseJSON); // bail out
     }
     return respondJSON(request, response, 401, responseJSON);
   }
@@ -81,7 +81,7 @@ const getForbidden = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    return respondXML(request, response, 200, responseJSON); // bail out
+    return respondXML(request, response, 403, responseJSON); // bail out
   }
   return respondJSON(request, response, 403, responseJSON);
 };
@@ -93,7 +93,7 @@ const getInternal = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    return respondXML(request, response, 200, responseJSON); // bail out
+    return respondXML(request, response, 500, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 500, responseJSON);
@@ -106,7 +106,7 @@ const getNotImplemented = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    return respondXML(request, response, 200, responseJSON); // bail out
+    return respondXML(request, response, 501, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 501, responseJSON);
@@ -119,7 +119,7 @@ const getNotFound = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    return respondXML(request, response, 200, responseJSON); // bail out
+    return respondXML(request, response, 404, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 404, responseJSON);
