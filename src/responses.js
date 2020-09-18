@@ -10,9 +10,9 @@ const respondJSON = (request, response, status, object) => {
   response.end();
 };
 
-const respondXML = (request, response, status, object) => {
+const respondXML = (request, response, status, string) => {
   response.writeHead(status, { 'Content-Type': 'text/xml' });
-  response.write(JSON.stringify(object));
+  response.write(`<response><message>${object.message}</message></response>`);
   response.end();
 };
 
@@ -33,8 +33,8 @@ const getSuccess = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message></response>`;
-    return respondXML(request, response, 200, responseXML); // bail out
+    //const responseXML = `<response><message>${responseJSON.message.trim()}</message></response>`;
+    return respondXML(request, response, 200, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 200, responseJSON);
