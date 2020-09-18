@@ -10,7 +10,7 @@ const respondJSON = (request, response, status, object) => {
   response.end();
 };
 
-const respondXML = (request, response, status, string) => {
+const respondXML = (request, response, status, object) => {
   response.writeHead(status, { 'Content-Type': 'text/xml' });
   response.write(`<response><message>${object.message}</message></response>`);
   response.end();
@@ -33,7 +33,6 @@ const getSuccess = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    //const responseXML = `<response><message>${responseJSON.message.trim()}</message></response>`;
     return respondXML(request, response, 200, responseJSON); // bail out
   }
 
@@ -51,9 +50,7 @@ const getBadRequest = (request, response, params, acceptedTypes) => {
     responseJSON.id = 'badRequest';
 
     if (acceptedTypes[0] === 'text/xml') {
-      const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-
-      return respondXML(request, response, 400, responseXML); // bail out
+      return respondXML(request, response, 200, responseJSON); // bail out
     }
     return respondJSON(request, response, 400, responseJSON);
   }
@@ -70,8 +67,7 @@ const getUnauthorized = (request, response, params, acceptedTypes) => {
     responseJSON.message = 'Missing logged in query parameter set to yes';
     responseJSON.id = 'unauthorized';
     if (acceptedTypes[0] === 'text/xml') {
-      const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-      return respondXML(request, response, 401, responseXML); // bail out
+      return respondXML(request, response, 200, responseJSON); // bail out
     }
     return respondJSON(request, response, 401, responseJSON);
   }
@@ -85,9 +81,7 @@ const getForbidden = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message><id>${responseJSON.id}</id></response>`;
-
-    return respondXML(request, response, 403, responseXML); // bail out
+    return respondXML(request, response, 200, responseJSON); // bail out
   }
   return respondJSON(request, response, 403, responseJSON);
 };
@@ -99,8 +93,7 @@ const getInternal = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message></response>`;
-    return respondXML(request, response, 500, responseXML); // bail out
+    return respondXML(request, response, 200, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 500, responseJSON);
@@ -113,8 +106,7 @@ const getNotImplemented = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message></response>`;
-    return respondXML(request, response, 501, responseXML); // bail out
+    return respondXML(request, response, 200, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 501, responseJSON);
@@ -127,8 +119,7 @@ const getNotFound = (request, response, params, acceptedTypes) => {
   };
 
   if (acceptedTypes[0] === 'text/xml') {
-    const responseXML = `<response><message>${responseJSON.message}</message></response>`;
-    return respondXML(request, response, 404, responseXML); // bail out
+    return respondXML(request, response, 200, responseJSON); // bail out
   }
 
   return respondJSON(request, response, 404, responseJSON);
